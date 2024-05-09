@@ -1,5 +1,6 @@
 const User = require("../models/user");
 const asyncHandler = require("express-async-handler");
+const bcrypt = require("bcrypt");
 
 exports.getUsers = asyncHandler(async (req, res, next) => {
     const users = await User.find();
@@ -14,7 +15,8 @@ exports.getUser = asyncHandler(async (req, res, next) => {
 exports.createUser = asyncHandler(async (req, res, next) => {
     const {username, email, password} = req.body;
     try {
-        const newUser = new User({ username, email, password});
+        const hashedPassword = await bcrypt.hash(password, 10);
+        const newUser = new User({ username, email, password: hashedPassword});
         await newUser.save();
         res.status(201).json(newUser);
     } catch (err) {
