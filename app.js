@@ -24,7 +24,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // REST API Design
 app.use("/api/posts", require("./routes/posts"));
-app.use("/api/comments", require("./routes/comments"));
+app.use("/api/posts/:id/comments", require("./routes/comments"));
 app.use('/api/users', require('./routes/users'));
 
 
