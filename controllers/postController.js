@@ -6,6 +6,15 @@ exports.getPosts = asyncHandler(async (req, res) => {
 	res.status(200).json(posts);
 });
 
+exports.getPost = asyncHandler(async (req, res) => {
+	const { id } = req.params;
+	const post = await Post.findById(id);
+	if (!post) {
+		res.status(404).json({ message: "Post not found" });
+	}
+	res.status(200).json(post);
+})
+
 exports.createPost = asyncHandler(async (req, res) => {
 	const post = new Post(req.body);
 	const savedPost = await post.save();
