@@ -33,6 +33,31 @@ exports.updatePost = asyncHandler(async (req, res) => {
 	res.status(200).json(updatedPost);
 });
 
+exports.publishPost = asyncHandler(async (req, res) => {
+	const { id } = req.params;
+	const post = await Post.findById(id);
+	if (!post) {
+		res.status(404).json({ message: "Post not found" });
+	}
+
+	const updatedPost = await Post.findByIdAndUpdate(id, { published: true }, {
+		new: true,	
+	})
+	res.status(200).json(updatedPost);
+})
+
+exports.unpublishPost = asyncHandler(async (req, res) => {
+	const { id } = req.params;
+	const post = await Post.findById(id);
+	if (!post) {
+		res.status(404).json({ message: "Post not found" });
+	}
+	const updatedPost = await Post.findByIdAndUpdate(id, { published: false }, {
+		new: true,
+	})
+	res.status(200).json(updatedPost);
+})
+
 exports.deletePost = asyncHandler(async (req, res) => {
 	const { id } = req.params;
 	const post = await Post.findById(id);
