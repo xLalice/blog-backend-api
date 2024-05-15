@@ -16,9 +16,13 @@ exports.getPost = asyncHandler(async (req, res) => {
 })
 
 exports.createPost = asyncHandler(async (req, res) => {
-	const post = new Post(req.body);
-	const savedPost = await post.save();
-	res.status(201).json(savedPost);
+    const post = new Post(req.body);
+    try {
+        const savedPost = await post.save();
+        res.status(201).json(savedPost);
+    } catch (error) {
+        res.status(500).json({ message: "Error creating post", error: error.message });
+    }
 });
 
 exports.updatePost = asyncHandler(async (req, res) => {
