@@ -63,12 +63,17 @@ exports.unpublishPost = asyncHandler(async (req, res) => {
 })
 
 exports.deletePost = asyncHandler(async (req, res) => {
-	const { id } = req.params;
-	const post = await Post.findById(id);
-	if (!post) {
-		res.status(404).json({ message: "Post not found" });
+	try {
+		const { id } = req.params;
+		const post = await Post.findByIdAndDelete(id);
+		
+		if (!post) {
+			throw new Error("Post not found");
+		}
+		
+		res.status(200).json({ message: "Post deleted" });
+	} catch (error) {
+		res.status(404).json({ message: error.message });
 	}
-	await post.remove();
-	res.status(200).json({ message: "Post deleted" });
 });
 
