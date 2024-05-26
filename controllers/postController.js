@@ -16,13 +16,15 @@ exports.getPost = asyncHandler(async (req, res) => {
 })
 
 exports.createPost = asyncHandler(async (req, res) => {
-    const post = new Post(req.body);
-    try {
-        const savedPost = await post.save();
-        res.status(201).json(savedPost);
-    } catch (error) {
-        res.status(500).json({ message: "Error creating post", error: error.message });
+    const { content, author, post } = req.body;
+
+    if (!content || !author || !post) {
+        return res.status(400).json({ message: "Content, author, and post are required." });
     }
+
+    const comment = new Comment({ content, author, post });
+    const savedComment = await comment.save();
+    res.status(201).json(savedComment);
 });
 
 exports.updatePost = asyncHandler(async (req, res) => {
