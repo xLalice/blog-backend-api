@@ -26,11 +26,10 @@ exports.updateComment = asyncHandler(async (req, res) => {
 
 exports.deleteComment = asyncHandler(async (req, res) => {
 	const { id } = req.params;
-	const comment = await Comment.findById(id);
+	const comment = await Comment.findByIdAndDelete(id);
 	if (!comment) {
 		res.status(404).json({ message: "Comment not found" });
 	}
-	await comment.remove();
 	res.status(200).json({ message: "Comment deleted" });
 });
 
